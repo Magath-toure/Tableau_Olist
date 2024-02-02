@@ -28,19 +28,13 @@ rev_cre_dat = st.sidebar.text_input("Review Creation Date")
 rev_ans_tim = st.sidebar.text_input("Review Answer Timestamp")
 make_pred_API = st.sidebar.button("Predict")
 
-#analyse univariée
-# Affichage de l'histogramme
-plt.hist(df['review_score'],
-         bins=20, color='skyblue', edgecolor='black')
-plt.title("Review score vs Review id")
-plt.xlabel('Review Score')
-plt.ylabel('Review id')
-#sns.scatterplot(
-    #df,
-   # x="review_score",
-   # y="review_id",
-   # title="Review score vs Review id",
-    #c="review_score")
+plot1 = px.scatter(
+    df,
+    x="review_score",
+    y="review_id",
+    title="Review id Vs Order id",
+    color="review_score")
+      
 
 plot2 = px.scatter(
     df,
@@ -89,17 +83,17 @@ if make_pred_API:
 
     p1_df = pd.DataFrame(row)
 
-    plt.add_scatter(x=p1_df["review_id"], 
-                      y=p1_df["order_id"],
+    plot1.add_scatter(x=p1_df["review_score"], 
+                      y=p1_df["review_id"],
                       mode='markers',  
                       name=review_score_pred,  
                       marker=dict(
-                            c='red',  # Couleur des points
-                            size=30,  # Taille des points
+                            color='red',  # Couleur des points
+                            size=60,  # Taille des points
                             symbol='circle',  # Type de marqueur (vous pouvez choisir parmi divers symboles)
                             line=dict(
-                                color='white',  # Couleur de la bordure des points
-                                width=10  # Largeur de la bordure des points
+                                color='black',  # Couleur de la bordure des points
+                                width=50  # Largeur de la bordure des points
                             )
                       ))
     plot2.add_scatter(x=p1_df["review_id"], 
@@ -108,11 +102,11 @@ if make_pred_API:
                       name=review_score_pred,  
                       marker=dict(
                             color='red',  # Couleur des points
-                            size=30,  # Taille des points
+                            size=60,  # Taille des points
                             symbol='circle',  # Type de marqueur (vous pouvez choisir parmi divers symboles)
                             line=dict(
                                 color='white',  # Couleur de la bordure des points
-                                width=10  # Largeur de la bordure des points
+                                width=50  # Largeur de la bordure des points
                             )
     ))
     plot3.add_scatter(x=p1_df["review_creation_date"], 
@@ -121,11 +115,11 @@ if make_pred_API:
                       name=review_score_pred,  
                       marker=dict(
                             color='red',  # Couleur des points
-                            size=30,  # Taille des points
+                            size=60,  # Taille des points
                             symbol='circle',  # Type de marqueur (vous pouvez choisir parmi divers symboles)
                             line=dict(
-                                color='black',  # Couleur de la bordure des points
-                                width=10  # Largeur de la bordure des points
+                                color='red',  # Couleur de la bordure des points
+                                width=50  # Largeur de la bordure des points
                             )))
     plot4.add_scatter(x=p1_df["review_comment_message"], 
                       y=p1_df["review_comment_title"],
@@ -133,14 +127,15 @@ if make_pred_API:
                       name=review_score_pred,  
                       marker=dict(
                             color='red',  
-                            size=30,  
+                            size=60,  
                             symbol='circle',  
                             line=dict(
-                                color='black', 
-                                width=10 
+                                color='bleu', 
+                                width=50 
                             )))
-#st.plotly_chart(plot1)
-plt.show()
+
+
+st.plotly_chart(plot1)
 st.plotly_chart(plot2)
 st.plotly_chart(plot3)
 st.plotly_chart(plot4)
@@ -170,116 +165,4 @@ st.plotly_chart(plot4)
 
 
 
-# Managing input data
-# p1 = ["", "", "", ""]
-
-# plot1 = px.scatter(
-#     df,
-#     x="petal_length",
-#     y="petal_width",
-#     title="Petal Length vs Petal Width",
-#     color="species")
-
-# plot2 = px.scatter(
-#     df,
-#     x="sepal_length",
-#     y="petal_length",
-#     title="Sepal Length vs Petal Length",
-#     color="species")
-
-# # Launch prediction with API
-# if make_pred_API:
-#     # Construire l'URL avec les paramètres
-#     url = f"http://localhost:8000/{float(sep_len)}/{float(sep_wid)}/{float(pet_len)}/{float(pet_wid)}"
-
-#     # Envoyer la requête à FastAPI
-#     response = requests.get(url)
-
-#     # Vérifier si la requête a réussi (statut 200)
-#     if response.status_code == 200:
-#         species_pred = response.json()["prediction"]
-#         st.success(f"Prediction result: {species_pred}")
-#     else:
-#         st.error("Error in prediction request.")
-
-#     p1 = [float(sep_len), float(sep_wid), float(pet_len), float(pet_wid)]
-#     row = {"sepal_length": [float(sep_len)],
-#            "sepal_width": [float(sep_wid)],
-#            "petal_length": [float(pet_len)],
-#            "petal_width": [float(pet_wid)]}
-#     p1_df = pd.DataFrame(row)
-
-#     st.subheader(f"Predicted Species: {species_pred}")
-#     plot1.add_scatter(x=p1_df["petal_length"], 
-#                       y=p1_df["petal_width"],
-#                       mode='markers',  
-#                       name=species_pred,  
-#                       marker=dict(
-#                             color='red',  # Couleur des points
-#                             size=10,  # Taille des points
-#                             symbol='circle',  # Type de marqueur (vous pouvez choisir parmi divers symboles)
-#                             line=dict(
-#                                 color='white',  # Couleur de la bordure des points
-#                                 width=2  # Largeur de la bordure des points
-#                             )
-#                       ))
-#     plot2.add_scatter(x=p1_df["sepal_length"], 
-#                       y=p1_df["petal_length"],
-#                       mode='markers',  
-#                       name=species_pred,  
-#                       marker=dict(
-#                             color='red',  # Couleur des points
-#                             size=10,  # Taille des points
-#                             symbol='circle',  # Type de marqueur (vous pouvez choisir parmi divers symboles)
-#                             line=dict(
-#                                 color='white',  # Couleur de la bordure des points
-#                                 width=2  # Largeur de la bordure des points
-#                             )
-#     ))
-
-# # Making a prediction and displaying data
-# if make_pred:
-#     p1 = [float(sep_len), float(sep_wid), float(pet_len), float(pet_wid)]
-#     x = np.array([p1])
-#     row = {"sepal_length": [float(sep_len)],
-#            "sepal_width": [float(sep_wid)],
-#            "petal_length": [float(pet_len)],
-#            "petal_width": [float(pet_wid)]}
-
-#     p1_df = pd.DataFrame(row)
-#     species_pred = make_prediction(x)
-
-#     st.subheader(f"Predicted Species: {species_pred}")
-#     plot1.add_scatter(x=p1_df["petal_length"], 
-#                       y=p1_df["petal_width"],
-#                       mode='markers',  
-#                       name=species_pred,  
-#                       marker=dict(
-#                             color='red',  # Couleur des points
-#                             size=10,  # Taille des points
-#                             symbol='circle',  # Type de marqueur (vous pouvez choisir parmi divers symboles)
-#                             line=dict(
-#                                 color='white',  # Couleur de la bordure des points
-#                                 width=2  # Largeur de la bordure des points
-#                             )
-#                       ))
-#     plot2.add_scatter(x=p1_df["sepal_length"], 
-#                       y=p1_df["petal_length"],
-#                       mode='markers',  
-#                       name=species_pred,  
-#                       marker=dict(
-#                             color='red',  # Couleur des points
-#                             size=10,  # Taille des points
-#                             symbol='circle',  # Type de marqueur (vous pouvez choisir parmi divers symboles)
-#                             line=dict(
-#                                 color='white',  # Couleur de la bordure des points
-#                                 width=2  # Largeur de la bordure des points
-#                             )
-#     ))
-
-# st.plotly_chart(plot1)
-# st.plotly_chart(plot2)
-
-# print('toto4')
-
-# #5.2/2.7/3.9/1.4
+                     

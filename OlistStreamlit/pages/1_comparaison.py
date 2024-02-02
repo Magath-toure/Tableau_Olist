@@ -1,6 +1,8 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+import seaborn as sns
+import matplotlib.pyplot as plt
 
 # Setup data
 df = pd.read_csv("data/olist_order_reviews_Dataset.csv")
@@ -14,7 +16,7 @@ st.markdown("Explore the variables to understand their relationships and how the
 st.sidebar.header("Variable Comparison")
 
 # Setting graph to display
-options = st.sidebar.radio("Select comparison",
+options = st.sidebar.radio("Select compairison",
                            options=["Review Creation date Vs Reviews answer timestamp",
                                     "Review Comment Message Vs Review Comment Title",
                                     "Review score vs Review id",
@@ -38,9 +40,9 @@ elif options == "Review Comment Message Vs Review Comment Title":
         y="review_comment_title",
         color="review_score",
         title=options)
-     #Personnalisation des axes
+    # Personnalisation des axes
     plot.update_xaxes(title_text="Review Comment Message")
-    plot.update_yaxes(title_text="Review Comment Title")
+    plot.update_yaxes(title_text="Review Comment Tittle")
 
 elif options == "Review score vs Review id":
     plot = px.scatter(
@@ -56,13 +58,17 @@ elif options == "Review score vs Review id":
 elif options == "Review id Vs Order id":
     plot = px.scatter(
         (df),
-        x="order_id",
-        y="review_id",
+        x="review_id",
+        y="order_id",
         color="review_score",
         title=options)
     # Personnalisation des axes
-    plot.update_xaxes(title_text="Order id")
-    plot.update_yaxes(title_text="Review id")
+    plot.update_xaxes(title_text="Review id")
+    plot.update_yaxes(title_text="Order id")
+
+#t.plotly_chart(plot)
+
+
+
 
 st.plotly_chart(plot)
-
